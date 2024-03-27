@@ -1,5 +1,6 @@
 package com.example.productservice.controllers;
 
+import com.example.productservice.dto.ProductDto;
 import com.example.productservice.models.Product;
 import com.example.productservice.services.FakeStoreProductService;
 import com.example.productservice.services.ProductService;
@@ -36,13 +37,13 @@ public class ProductController {
     }
 
     @PatchMapping("/{id}")
-    public Product updateProduct(@PathVariable("id") Long id , @RequestBody Product product){
-        return new Product();
+    public Product updateProduct(@PathVariable("id") Long id , @RequestBody ProductDto productDto){
+        return productService.updateProduct(id,productDto);
     }
 
     @PutMapping("/{id}")
-    public  Product replaceProduct(@PathVariable("id") Long id , @RequestBody Product product){
-        return new Product();
+    public  Product replaceProduct(@PathVariable("id") Long id , @RequestBody ProductDto productDto){
+        return productService.replaceProduct(id,productDto);
     }
 
     @DeleteMapping("/{id}")
