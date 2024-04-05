@@ -13,7 +13,7 @@ public interface ProductService {
     public Product getProductById( Long id) throws InvalidProductIdException;
     public List<Product> getAllProducts();
     public void createProduct( Product product);
-    public Product updateProduct( Long id , ProductDto productDto);
+    public Product updateProduct( Long id , ProductDto productDto) throws InvalidProductIdException;
     public  Product replaceProduct( Long id , ProductDto productDto);
-    public void deleteProduct(Long id);
+    public void deleteProduct(Long id) throws InvalidProductIdException;
 }

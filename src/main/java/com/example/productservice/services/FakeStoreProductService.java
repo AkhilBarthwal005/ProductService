@@ -4,6 +4,7 @@ import com.example.productservice.dto.ProductDto;
 import com.example.productservice.exceptions.InvalidProductIdException;
 import com.example.productservice.models.Category;
 import com.example.productservice.models.Product;
+import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +16,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Arrays;
 import java.util.List;
 
-@Service
+@Service("fakeStoreProductService")
 public class FakeStoreProductService implements ProductService{
 
     private RestTemplate restTemplate;
@@ -35,7 +36,7 @@ public class FakeStoreProductService implements ProductService{
         product.setDescription(fakeStoreProductDto.getDescription());
 
         Category category = new Category();
-        int randomNumber = (int) (Math.random() * 100) + 1;
+        long randomNumber = (long) (Math.random() * 100) + 1;
         category.setId(randomNumber);
         category.setTitle(fakeStoreProductDto.getCategory());
         product.setCategory(category);

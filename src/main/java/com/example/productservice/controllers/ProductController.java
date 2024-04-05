@@ -7,6 +7,7 @@ import com.example.productservice.exceptions.ProductControllerException;
 import com.example.productservice.models.Product;
 import com.example.productservice.services.FakeStoreProductService;
 import com.example.productservice.services.ProductService;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,10 +18,10 @@ import java.util.List;
 @RequestMapping("/products")
 public class ProductController {
 
-    private ProductService productService;
+    private final ProductService productService;
 
 //    @Autowired  it is optional now with new spring
-    public ProductController(FakeStoreProductService productService) {
+    public ProductController(@Qualifier("selfProductService") ProductService productService) {
         this.productService = productService;
     }
 
@@ -38,11 +39,11 @@ public class ProductController {
 
     @PostMapping()
     public void createProduct(@RequestBody Product product){
-
+        productService.createProduct(product);
     }
 
     @PatchMapping("/{id}")
-    public Product updateProduct(@PathVariable("id") Long id , @RequestBody ProductDto productDto){
+    public Product updateProduct(@PathVariable("id") Long id , @RequestBody ProductDto productDto) throws InvalidProductIdException {
         return productService.updateProduct(id,productDto);
     }
 
@@ -52,8 +53,8 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteProduct(@PathVariable("id") Long id){
-
+    public void deleteProduct(@PathVariable("id") Long id) throws InvalidProductIdException {
+        productService.deleteProduct(id);
     }
 
     // Exception Handling Specify to the product controller
