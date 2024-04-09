@@ -55,10 +55,12 @@ public class SelfProductService implements ProductService{
     @Override
     public void createProduct(Product product) {
         Category category = product.getCategory();
-        if(category.getId() == null){
-            Category saveCategory = categoryRepository.save(category);
-            product.setCategory(saveCategory);
-        }
+        // if we are using cascade type All then as soon as we save product it will save category as well.
+//        if(category.getId() == null){
+//            Category saveCategory = categoryRepository.save(category);
+//            product.setCategory(saveCategory);
+//        }
+
         productRepository.save(product);
     }
 
