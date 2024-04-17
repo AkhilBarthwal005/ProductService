@@ -27,9 +27,10 @@ public class ProductController {
 
     // localhost:8080/products/10
     @GetMapping("/{id}")
-    public Product getProductById(@PathVariable("id") Long id) throws InvalidProductIdException {
+    public ResponseEntity<Product> getProductById(@PathVariable("id") Long id) throws InvalidProductIdException {
 
-        return  productService.getProductById(id);
+        Product product = productService.getProductById(id);
+        return new ResponseEntity<>(product,HttpStatus.OK);
     }
 
     @GetMapping()
