@@ -1,7 +1,9 @@
 package com.example.productservice.controllers;
 
+import com.example.productservice.commons.AuthenticateCommons;
 import com.example.productservice.dto.ExceptionDto;
 import com.example.productservice.dto.ProductDto;
+import com.example.productservice.dto.UserDTO;
 import com.example.productservice.exceptions.InvalidProductIdException;
 import com.example.productservice.exceptions.ProductControllerException;
 import com.example.productservice.models.Product;
@@ -9,9 +11,11 @@ import com.example.productservice.services.FakeStoreProductService;
 import com.example.productservice.services.ProductService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -20,9 +24,12 @@ public class ProductController {
 
     private final ProductService productService;
 
+    private final AuthenticateCommons authenticateCommons;
+
 //    @Autowired  it is optional now with new spring
-    public ProductController(@Qualifier("selfProductService") ProductService productService) {
+    public ProductController(@Qualifier("selfProductService") ProductService productService, AuthenticateCommons authenticateCommons) {
         this.productService = productService;
+        this.authenticateCommons = authenticateCommons;
     }
 
     // localhost:8080/products/10
@@ -33,9 +40,18 @@ public class ProductController {
         return new ResponseEntity<>(product,HttpStatus.OK);
     }
 
-    @GetMapping()
-    public List<Product> getAllProducts(){
-        return productService.getAllProducts();
+    @GetMapping("/all/{token}")
+    public ResponseEntity<List<Product>> getAllProducts(@PathVariable  String token){
+
+        // check the token
+        UserDTO userDTO = authenticateCommons.validateToken(token);
+        if(userDTO == null){
+            // throw exception
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+        List<Product> products = productService.getAllProducts();
+
+        return new ResponseEntity<>(products,HttpStatus.OK);
     }
 
     @PostMapping()
