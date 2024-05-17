@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: ProductService
+  datasource:
+    url: ${PRODUCT_SERVICE_DB_URL}
+    username: ${PRODUCT_SERVICE_DB_USERNAME}
+    password: ${PRODUCT_SERVICE_DB_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    show-sql: true
+logging:
+  level:
+    org.springframework.web: debug
+server:
+  port: 8081
+
+
