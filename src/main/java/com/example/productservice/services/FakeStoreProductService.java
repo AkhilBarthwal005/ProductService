@@ -5,6 +5,7 @@ import com.example.productservice.exceptions.InvalidProductIdException;
 import com.example.productservice.models.Category;
 import com.example.productservice.models.Product;
 import org.springframework.context.annotation.Primary;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -54,6 +55,11 @@ public class FakeStoreProductService implements ProductService{
         }
 
         return convertFakeStoreProductDtoToProduct(fakeStoreProductDto);
+    }
+
+    @Override
+    public Page<Product> getAllProducts(int pageNumber, int pageSize) {
+        return null;
     }
 
     @Override

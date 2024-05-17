@@ -7,6 +7,10 @@ import com.example.productservice.models.Product;
 import com.example.productservice.repository.CategoryRepository;
 import com.example.productservice.repository.ProductRepository;
 import org.springframework.context.annotation.Primary;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -47,6 +51,11 @@ public class SelfProductService implements ProductService{
         // fetch the product from the db with given id
         Optional<Product> optionalProduct = productRepository.findById(id);
         return  optionalProduct.isEmpty()? null : optionalProduct.get();
+    }
+
+    @Override
+    public Page<Product> getAllProducts(int pageNumber, int pageSize) {
+        return productRepository.findAll(PageRequest.of(pageNumber,pageSize, Sort.by("price").ascending()));
     }
 
     @Override

@@ -10,6 +10,7 @@ import com.example.productservice.models.Product;
 import com.example.productservice.services.FakeStoreProductService;
 import com.example.productservice.services.ProductService;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -40,8 +41,16 @@ public class ProductController {
         return new ResponseEntity<>(product,HttpStatus.OK);
     }
 
+    @GetMapping("/all")
+    public ResponseEntity<List<Product>> getAllProducts(){
+
+        List<Product> products = productService.getAllProducts();
+
+        return new ResponseEntity<>(products,HttpStatus.OK);
+    }
+
     @GetMapping("/all/{token}")
-    public ResponseEntity<List<Product>> getAllProducts(@PathVariable  String token){
+    public ResponseEntity<List<Product>> getAllProducts(@PathVariable("token") String token){
 
         // check the token
         UserDTO userDTO = authenticateCommons.validateToken(token);
@@ -50,6 +59,14 @@ public class ProductController {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
         List<Product> products = productService.getAllProducts();
+
+        return new ResponseEntity<>(products,HttpStatus.OK);
+    }
+
+    @GetMapping("/all/pages")
+    public ResponseEntity<Page<Product>> getAllProducts(@RequestParam("pageNumber") int pageNumber, @RequestParam("pageSize") int pageSize){
+
+        Page<Product> products = productService.getAllProducts(pageNumber,pageSize);
 
         return new ResponseEntity<>(products,HttpStatus.OK);
     }
