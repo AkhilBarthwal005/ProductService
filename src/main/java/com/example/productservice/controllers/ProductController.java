@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,18 +28,26 @@ public class ProductController {
 
     private final AuthenticateCommons authenticateCommons;
 
+    private final RestTemplate restTemplate;
+
 //    @Autowired  it is optional now with new spring
-    public ProductController(@Qualifier("selfProductService") ProductService productService, AuthenticateCommons authenticateCommons) {
+    public ProductController(@Qualifier("selfProductService") ProductService productService, AuthenticateCommons authenticateCommons, RestTemplate restTemplate) {
         this.productService = productService;
         this.authenticateCommons = authenticateCommons;
+        this.restTemplate = restTemplate;
     }
 
     // localhost:8080/products/10
     @GetMapping("/{id}")
     public ResponseEntity<Product> getProductById(@PathVariable("id") Long id) throws InvalidProductIdException {
 
+
+
+        ResponseEntity<String> responseEntity = restTemplate.getForEntity("http://UserService/users/10", String.class);
+
         Product product = productService.getProductById(id);
         return new ResponseEntity<>(product,HttpStatus.OK);
+
     }
 
     @GetMapping("/all")

@@ -12,6 +12,13 @@ logging:
   level:
     org.springframework.web: debug
 server:
-  port: 8081
+  port: ${PRODUCT_SERVICE_PORT}
 
-
+# eureka configuration
+eureka.client.register-with-eureka: true
+eureka.client.fetch-registry: true
+# if eureka server is running on default port number 8761 then no need to specify serviceUrl
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
