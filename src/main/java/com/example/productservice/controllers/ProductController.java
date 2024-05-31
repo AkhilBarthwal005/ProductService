@@ -43,7 +43,8 @@ public class ProductController {
 
 
 
-        ResponseEntity<String> responseEntity = restTemplate.getForEntity("http://UserService/users/10", String.class);
+//        ResponseEntity<String> responseEntity = restTemplate.getForEntity("http://UserService/users/10", String.class);
+         System.out.println("Product Service");
 
         Product product = productService.getProductById(id);
         return new ResponseEntity<>(product,HttpStatus.OK);
